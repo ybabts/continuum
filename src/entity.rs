@@ -1,4 +1,5 @@
-pub mod node;
+mod node;
+pub use node::Node;
 use std::{fs::{OpenOptions, File}, io::{SeekFrom, Seek, Read, Write}};
 
 pub trait Entity {
@@ -73,5 +74,9 @@ pub trait Entity {
     let pos = file.seek(SeekFrom::End(0))?;
     file.write_all(&vec![0; Self::BYTE_LENGTH])?;
     return Ok(pos / Self::BYTE_LENGTH as u64);
+  }
+  fn new() -> Result<Self, std::io::Error> where Self: Sized {
+    let id = Self::alloc()?;
+    return Ok(Self::load(id)?);
   }
 }
