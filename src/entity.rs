@@ -22,13 +22,7 @@ pub trait Entity {
       }
     }
   }
-  fn file_exists() -> bool {
-    return std::path::Path::new(&Self::get_file_path()).exists();
-  }
   fn open_file() -> Result<std::fs::File, std::io::Error> {
-    if Self::file_exists() == false {
-      Self::create_file()?;
-    }
     return Ok(OpenOptions::new()
       .read(true)
       .write(true)
